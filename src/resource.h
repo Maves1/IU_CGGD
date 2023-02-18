@@ -36,12 +36,14 @@ namespace cg
 	template<typename T>
 	inline resource<T>::resource(size_t size)
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
+		data.resize(size);
+		stride = size;
 	}
 	template<typename T>
 	inline resource<T>::resource(size_t x_size, size_t y_size)
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
+		data.resize(x_size * y_size);
+		stride = x_size;
 	}
 	template<typename T>
 	inline resource<T>::~resource()
@@ -50,52 +52,44 @@ namespace cg
 	template<typename T>
 	inline const T* resource<T>::get_data()
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return nullptr;
+		return data.data();
 	}
 	template<typename T>
 	inline T& resource<T>::item(size_t item)
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return T();
+		return data.at(item);
 	}
 	template<typename T>
 	inline T& resource<T>::item(size_t x, size_t y)
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return T();
+		return data.at(y * stride + x);
 	}
 	template<typename T>
 	inline size_t resource<T>::get_size_in_bytes() const
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return 0;
+		return item_size * data.size();
 	}
 	template<typename T>
 	inline size_t resource<T>::get_number_of_elements() const
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return 0;
+		return data.size();
 	}
 
 	template<typename T>
 	inline size_t resource<T>::get_stride() const
 	{
-		// TODO Lab: 1.02 Implement `cg::resource` class
-		return 0;
+		return stride;
 	}
 
 	struct color
 	{
 		static color from_float3(const float3& in)
 		{
-			// TODO Lab: 1.02 Implement `cg::color` and `cg::unsigned_color` structs
-			return color{};
+			return color{in.x, in.y, in.z};
 		};
 		float3 to_float3() const
 		{
-			// TODO Lab: 1.02 Implement `cg::color` and `cg::unsigned_color` structs
-			return float3{};
+			return float3{r, g, b};
 		}
 		float r;
 		float g;
@@ -106,18 +100,22 @@ namespace cg
 	{
 		static unsigned_color from_color(const color& color)
 		{
-			// TODO Lab: 1.02 Implement `cg::color` and `cg::unsigned_color` structs
-			return unsigned_color{};
+			unsigned_color result;
+			result.r = std::clamp(static_cast<int>(255 * color.r), 0, 255);
+			result.g = std::clamp(static_cast<int>(255 * color.g), 0, 255);
+ 			result.b = std::clamp(static_cast<int>(255 * color.b), 0, 255);
+
+			return result;
 		};
 		static unsigned_color from_float3(const float3& color)
 		{
-			// TODO Lab: 1.02 Implement `cg::color` and `cg::unsigned_color` structs
-			return unsigned_color{};
+			return from_color(color::from_float3(color));
 		};
 		float3 to_float3() const
 		{
-			// TODO Lab: 1.02 Implement `cg::color` and `cg::unsigned_color` structs
-			return float3{};
+			return float3{static_cast<float>(r),
+						  static_cast<float>(g),
+						  static_cast<float>(b)};
 		};
 		uint8_t r;
 		uint8_t g;
@@ -127,7 +125,13 @@ namespace cg
 
 	struct vertex
 	{
-		// TODO Lab: 1.03 Implement `cg::vertex` struct
+		float x, y, z;
+		float nx, ny, nz;  // Normals
+		float u, v;  // Texture coordinates
+
+		color color_ambient;
+		color color_diffuse;
+		color color_emissive;
 	};
 
 }// namespace cg

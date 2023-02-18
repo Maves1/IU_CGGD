@@ -23,7 +23,7 @@ void cg::utils::save_resource(
 	if (result != 1)
 		THROW_ERROR("Can't save the resource");
 
-	std::string view_command("start ");
+	std::string view_command("open ");
 	view_command.append(filepath.string());
 
 	std::system(view_command.c_str());
