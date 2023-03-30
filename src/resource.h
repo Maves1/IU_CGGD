@@ -115,7 +115,7 @@ namespace cg
 		{
 			return float3{static_cast<float>(r),
 						  static_cast<float>(g),
-						  static_cast<float>(b)};
+						  static_cast<float>(b)} / 255.0f;
 		};
 		uint8_t r;
 		uint8_t g;

@@ -45,7 +45,7 @@ void cg::world::camera::set_height(float in_height)
 
 void cg::world::camera::set_width(float in_width)
 {
-	height = in_width;
+	width = in_width;
 	aspect_ratio = width / height;
 }
 
