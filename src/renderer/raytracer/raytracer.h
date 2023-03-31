@@ -219,12 +219,12 @@ namespace cg::renderer
 					 payload payload = trace_ray(curr_ray, depth);
 
 					 auto &history_pixel = history->item(x, y);
-					 history_pixel += float3{payload.color.r,
-											 payload.color.g,
-											 payload.color.b} * frame_weight;
+					 history_pixel += sqrt(float3{payload.color.r,
+												  payload.color.g,
+												  payload.color.b} * frame_weight);
 
 					 if (frame_id == accumulation_num - 1)
-					 	render_target->item(x, y) = RT::from_color(payload.color);
+					 	render_target->item(x, y) = RT::from_float3(history_pixel);
 				 }
 			 }
 		}
