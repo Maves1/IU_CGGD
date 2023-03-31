@@ -76,7 +76,7 @@ namespace cg::renderer
 		if (depth_buffer) {
 			for (std::size_t i = 0; i < depth_buffer->get_number_of_elements(); i++) {
 				// render_target->item(i) = in_clear_value;
-				depth_buffer->item(i) = 0.f;
+				depth_buffer->item(i) = in_depth;
 			}
 		}
 		// TODO Lab: 1.06 Adjust `set_render_target`, and `clear_render_target` methods of `cg::renderer::rasterizer` class to consume a depth buffer
@@ -125,12 +125,12 @@ namespace cg::renderer
 
 			float2 min_vertex = min(vertex_a, min(vertex_b, vertex_c));
 
-			float2 bounding_box_begin = round(std::clamp(min_vertex, float2{0, 0}, float2{static_cast<float>(width - 1),
+			float2 bounding_box_begin = round(clamp(min_vertex, float2{0, 0}, float2{static_cast<float>(width - 1),
 																						  static_cast<float>(height - 1)}));
 
 			float2 max_vertex = max(vertex_a, max(vertex_b, vertex_c));
 
-			float2 bounding_box_end = round(std::clamp(max_vertex, float2{0, 0}, float2{static_cast<float>(width - 1),
+			float2 bounding_box_end = round(clamp(max_vertex, float2{0, 0}, float2{static_cast<float>(width - 1),
 																					    static_cast<float>(height - 1)}));
 
 			float edge  = edge_function(vertex_a, vertex_b, vertex_c);
